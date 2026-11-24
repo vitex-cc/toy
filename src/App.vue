@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, reactive, computed, onMounted, onUnmounted } from "vue";
 import { PALETTES } from "./composables/palettes.js";
 import { Sound } from "./composables/sound.js";
 import {
@@ -13,6 +13,7 @@ import { mascotImageSrc } from "./composables/assets.js";
 import TopTabs from "./components/TopTabs.vue";
 import ScoreChip from "./components/ScoreChip.vue";
 import MathView from "./components/MathView.vue";
+import LettersView from "./components/LettersView.vue";
 import LockedPanel from "./components/LockedPanel.vue";
 import BgDecor from "./components/BgDecor.vue";
 
@@ -58,6 +59,19 @@ const total = ref(0);
 const streak = ref(0);
 const mascotMood = ref("idle");
 const mascotMsg = ref(pickMsg("idle"));
+
+// Letter challenge keeps its own score; the chip shows the active tab's.
+const letterScore = reactive({ correct: 0, total: 0, streak: 0 });
+function onLetterAnswer(ok) {
+    letterScore.total += 1;
+    letterScore.correct += ok ? 1 : 0;
+    letterScore.streak = ok ? letterScore.streak + 1 : 0;
+}
+const chip = computed(() =>
+    tab.value === "letters"
+        ? letterScore
+        : { correct: correct.value, total: total.value, streak: streak.value },
+);
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -177,9 +191,9 @@ function lockedTab() {
             />
 
             <ScoreChip
-                :correct="correct"
-                :total="total"
-                :streak="streak"
+                :correct="chip.correct"
+                :total="chip.total"
+                :streak="chip.streak"
                 :palette="palette"
             />
         </div>
@@ -200,6 +214,13 @@ function lockedTab() {
                 @submit="handleSubmit"
                 @skip="nextQuestion"
                 @view-mode="(m) => (viewMode = m)"
+            />
+            <LettersView
+                v-else-if="tab === 'letters'"
+                :palette="palette"
+                :sound-on="tweaks.soundOn"
+                :streak="letterScore.streak"
+                @answer="onLetterAnswer"
             />
             <LockedPanel
                 v-else

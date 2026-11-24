@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     // Media is intentionally embedded as base64 so the app has no runtime asset fetches.
-    chunkSizeWarningLimit: 3000,
+    chunkSizeWarningLimit: 4000,
   },
 });

@@ -1,4 +1,5 @@
 import { STATIC_TTS_AUDIO } from "../generated/tts-audio.js";
+import { LETTER_AUDIO } from "../generated/letter-audio.js";
 
 // text -> data URL
 const cache = new Map();
@@ -30,11 +31,21 @@ function stopCurrent() {
 }
 
 // Resolves when the audio finishes playing (ended / error / interrupt /
-// autoplay-blocked). Returns immediately if the fetch fails.
+// autoplay-blocked). Returns immediately if the clip is missing.
 export async function speak(text) {
   if (!text) return;
-  const url = getUrl(text);
-  if (!url) return;
+  return playUrl(getUrl(text));
+}
+
+// Play the English name of a letter ("A" -> /eɪ/).
+export async function speakLetter(letter) {
+  const url = LETTER_AUDIO[String(letter).toUpperCase()];
+  if (!url) console.warn(`[tts] missing letter audio: ${letter}`);
+  return playUrl(url);
+}
+
+function playUrl(url) {
+  if (!url) return Promise.resolve();
 
   stopCurrent();
 

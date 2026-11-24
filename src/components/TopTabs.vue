@@ -7,7 +7,7 @@ const emit = defineEmits(["change", "locked"]);
 
 const tabs = [
   { id: "math", label: "加减法", sub: "20以内", icon: "➕", ready: true },
-  { id: "letters", label: "字母", sub: "ABC", icon: "🔤", ready: false },
+  { id: "letters", label: "字母", sub: "ABC", icon: "🔤", ready: true },
   { id: "pinyin", label: "拼音", sub: "ā á ǎ à", icon: "🔡", ready: false },
 ];
 
