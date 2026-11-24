@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "gen:tts": "node scripts/gen-tts.js",
-    "gen:letters": "node scripts/gen-letter-audio.js"
+    "gen:letters": "node scripts/gen-letter-audio.js",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "vue": "^3.5.13"

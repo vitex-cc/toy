@@ -44,6 +44,14 @@ Run lint checks:
 npm run lint
 ```
 
+## Deploy
+
+```bash
+npm run deploy
+```
+
+Builds the app and syncs `dist/` to `jp:/opt/service/toy` (override with `DEPLOY_HOST` / `DEPLOY_DIR`), replacing the previous release. The server runs nginx with `deploy/nginx/toy.vitex.cc.conf` installed as `/etc/nginx/conf.d/toy.vitex.cc.conf`, serving http://toy.vitex.cc.
+
 ## Audio generation
 
 All audio is pre-generated into `src/generated/` and committed, so normal development needs no network access.
